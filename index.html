@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="gate">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مختبر هندسة تقنيات الحاسوب</title>
+<meta name="description" content="دليل الطالب في مختبر هندسة تقنيات الحاسوب: خريطة المختبر، تعليمات الأجهزة، والبرامج المثبّتة.">
+<meta name="theme-color" content="#0A1730">
+<meta property="og:title" content="مختبر هندسة تقنيات الحاسوب">
+<meta property="og:description" content="دليل الطالب: خريطة المختبر، تعليمات الأجهزة، والبرامج المثبّتة.">
+<link rel="icon" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="preload" href="fonts/reem-kufi-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- شريط التنقل الجانبي: مسار دائرة كهربائية يتقدم مع التمرير -->
+<nav class="rail" aria-label="التنقل بين الأقسام">
+  <div class="rail-line"><i class="rail-fill"></i></div>
+  <ol class="rail-nodes"></ol>
+</nav>
+
+<main>
+
+<!-- ============ 1) الترحيب ============ -->
+<section id="hero" class="sec hero in" data-title="الترحيب">
+  <svg class="traces" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="trace-set" fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <path id="t1" pathLength="1" d="M0 300H220L340 420H352"/>
+      <path id="t2" pathLength="1" d="M0 700H200L330 570H352"/>
+      <path id="t3" pathLength="1" d="M1000 300H780L660 420H648"/>
+      <path id="t4" pathLength="1" d="M1000 700H800L670 570H648"/>
+      <path id="t5" pathLength="1" d="M500 0V150L560 210V330"/>
+      <path id="t6" pathLength="1" d="M500 1000V850L440 790V670"/>
+      <path id="t7" pathLength="1" d="M0 500H300"/>
+      <path id="t8" pathLength="1" d="M1000 500H700"/>
+    </g>
+    <g class="trace-ends" fill="currentColor">
+      <circle cx="352" cy="420" r="5"/><circle cx="352" cy="570" r="5"/><circle cx="648" cy="420" r="5"/><circle cx="648" cy="570" r="5"/>
+      <circle cx="560" cy="330" r="5"/><circle cx="440" cy="670" r="5"/><circle cx="300" cy="500" r="5"/><circle cx="700" cy="500" r="5"/>
+    </g>
+    <g class="pulses" fill="#F0D58F">
+      <circle r="4"><animateMotion dur="3.6s" repeatCount="indefinite" begin="2.4s" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#t1"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="4.1s" repeatCount="indefinite" begin="2.8s"><mpath href="#t4"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="3.1s"><mpath href="#t5"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="3.8s" repeatCount="indefinite" begin="3.4s"><mpath href="#t2"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="4.4s" repeatCount="indefinite" begin="2.6s"><mpath href="#t3"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="3.4s" repeatCount="indefinite" begin="3.7s"><mpath href="#t6"/></animateMotion></circle>
+    </g>
+  </svg>
+
+  <div class="hero-core">
+    <button class="logo-btn" id="logoBtn" type="button" aria-label="اضغط للدخول والاستماع إلى الترحيب">
+      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+      <img class="logo" src="assets/logo.png" alt="شعار الجامعة الإسلامية - كلية الهندسة التقنية" width="404" height="400">
+    </button>
+
+    <h1 class="welcome">
+      <span class="l1"><span class="w" style="--i:0">أهلاً</span> <span class="w" style="--i:1">وسهلاً</span> <span class="w" style="--i:2">بك</span></span>
+      <span class="l2"><span class="w" style="--i:3">في</span> <span class="w" style="--i:4">مختبر</span> <span class="w" style="--i:5">هندسة</span> <span class="w" style="--i:6">تقنيات</span> <span class="w" style="--i:7">الحاسوب</span></span>
+    </h1>
+
+    <p class="dept">قسم هندسة تقنيات الحاسوب<br><span>كلية الهندسة التقنية، الجامعة الإسلامية</span></p>
+
+    <div class="cue">
+      <button class="enter-cta" id="enterCta" type="button">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        اضغط للدخول
+      </button>
+      <div class="scroll-cue" id="scrollCue" hidden>
+        <span>مرّر للأسفل</span>
+        <svg viewBox="0 0 24 40" width="22" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="c1" d="m5 8 7 7 7-7"/><path class="c2" d="m5 18 7 7 7-7"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2) الدليل السريع ============ -->
+<section id="guide" class="sec dark guide" data-title="دليل سريع">
+  <div class="wrap">
+    <h2 class="wipe">دليلك السريع</h2>
+    <p class="lead">كل ما تحتاجه قبل أن تجلس أمام جهازك. الصفحات قليلة، وتنزل بينها بتمريرة واحدة.</p>
+
+    <ul class="hints">
+      <li>
+        <span class="hint-ic" aria-hidden="true"><i class="dot swipe"></i></span>
+        <div><b>مرّر للأسفل</b><span>تنتقل بين الأقسام تلقائياً دون أزرار.</span></div>
+      </li>
+      <li>
+        <span class="hint-ic" aria-hidden="true"><i class="dot tap"></i></span>
+        <div><b>المس أي ميز في الخريطة</b><span>لتعرف رمزه ورمز كل لابتوب عليه.</span></div>
+      </li>
+      <li>
+        <span class="hint-ic" aria-hidden="true">
+          <svg class="spin" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+        </span>
+        <div><b>جرّب المحاكاة</b><span>شاهد ما يحدث عند إعادة التشغيل أو إغلاق الشاشة.</span></div>
+      </li>
+    </ul>
+
+    <nav class="jump" aria-label="اختصارات سريعة">
+      <a href="#map">خريطة المختبر</a>
+      <a href="#freeze">نظام التجميد</a>
+      <a href="#shutdown">تنبيه الإطفاء</a>
+      <a href="#programs">البرامج</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ 3) التذكير ============ -->
+<section id="reminder" class="sec reminder" data-title="تذكير">
+  <svg class="gear-bg" viewBox="0 0 400 400" aria-hidden="true"><path class="gear-a" fill="none" stroke="currentColor" stroke-width="2"/><path class="gear-b" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+  <div class="wrap">
+    <h2 class="wipe">المختبر وُجد لخدمتك</h2>
+    <p class="quote" id="quote">والمحافظة عليه انعكاسٌ لكونك مهندساً واعداً.</p>
+
+    <ul class="rules">
+      <li>
+        <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h22l-2 14H7z"/><path d="M9 12 12 5h8l3 7"/><path d="M13 18v4M19 18v4"/></svg>
+        <span>اترك الطاولة نظيفة كما وجدتها.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3v26M3 16h26M16 3l-4 4M16 3l4 4M16 29l-4-4M16 29l4-4M3 16l4-4M3 16l4 4M29 16l-4-4M29 16l-4 4"/><path d="M5 5l22 22"/></svg>
+        <span>لا ترفع اللابتوب ولا تنقله من مكانه.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="7" width="22" height="15" rx="2"/><path d="M2 26h28"/></svg>
+        <span>تعامل مع اللابتوب برفق.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4 3 27h26z"/><path d="M16 13v7M16 24h.01"/></svg>
+        <span>أبلغ المسؤول عن أي عطل فور حدوثه.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 4) خريطة المختبر ============ -->
+<section id="map" class="sec map-sec" data-title="الخريطة">
+  <div class="wrap map-grid">
+    <div class="map-head">
+      <h2 class="wipe">خريطة المختبر</h2>
+      <p class="lead">25 ميزاً في ثلاثة خطوط، وعلى كل ميز لابتوبان: 50 جهازاً. المس أي ميز لتعرف رموزه.</p>
+    </div>
+
+    <figure class="plan" id="plan" aria-label="مخطط المختبر"></figure>
+
+    <div class="info" id="deskInfo" aria-live="polite">
+      <p class="info-empty">المس ميزاً على الخريطة لتظهر تفاصيله هنا.</p>
+    </div>
+
+    <div class="legend-wrap">
+        <h3>دلالات الرموز</h3>
+        <dl class="legend">
+          <div>
+            <dt><span class="chips"><i class="ch a">A</i><i class="ch b">B</i><i class="ch c">C</i></span></dt>
+            <dd><b>الحرف واللون: الخط.</b> A بجانب الباب (8 ميز)، B بجانب النوافذ (8 ميز)، C في الوسط (9 ميز).</dd>
+          </div>
+          <div>
+            <dt><span class="sym"><b>3</b></span></dt>
+            <dd><b>الرقم: ترتيب الميز.</b> يبدأ العدّ من جهة السبورة نحو آخر المختبر.</dd>
+          </div>
+          <div>
+            <dt><span class="sym lap"><i>L</i><i>R</i></span></dt>
+            <dd><b>L و R: موضع اللابتوب.</b> L يسارك و R يمينك وأنت جالس أمام الميز، فرمز اللابتوب مثل <bdi>B4-L</bdi>.</dd>
+          </div>
+          <div>
+            <dt><span class="dots"><i class="g"></i><i class="o"></i><i class="r"></i></span></dt>
+            <dd><b>ملصق الحالة.</b> أخضر: جاهز. برتقالي: يحتاج صيانة. أحمر: لا تستخدمه وأبلغ المسؤول.</dd>
+          </div>
+        </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5) نظام التجميد ============ -->
+<section id="freeze" class="sec dark freeze" data-title="التجميد">
+  <div class="wrap split">
+    <div class="text">
+      <h2 class="wipe">نظام التجميد</h2>
+      <p class="lead">حواسيب هذا المختبر محمية بنظام تجميد. عند إعادة تشغيل الجهاز يعود تماماً كما كان قبل أن تبدأ.</p>
+      <ul class="plain">
+        <li>كل ملف تنشئه أو تغيير تجريه يُمحى بعد إعادة التشغيل.</li>
+        <li>تجد الجهاز نظيفاً وجاهزاً في كل محاضرة.</li>
+        <li><b>تأكد من أنك أنهيت عملك</b> قبل أن تضغط زر الإطفاء أو تغلق الشاشة.</li>
+      </ul>
+    </div>
+
+    <div class="demo" id="freezeDemo">
+      <div class="laptop">
+        <div class="lscreen">
+          <div class="desktop">
+            <div class="dicon"><svg viewBox="0 0 32 32" width="30" height="30"><path d="M3 8a2 2 0 0 1 2-2h7l3 3h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#F0C14B"/></svg><span>المستندات</span></div>
+            <div class="dicon"><svg viewBox="0 0 32 32" width="30" height="30"><rect x="4" y="4" width="24" height="24" rx="5" fill="#4A63D9"/><path d="m12 12-4 4 4 4M20 12l4 4-4 4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>البرامج</span></div>
+            <div class="dicon userfile" id="userFile" hidden><svg viewBox="0 0 32 32" width="30" height="30"><path d="M8 3h11l7 7v19H8z" fill="#fff"/><path d="M19 3v7h7" fill="#C9D6F0"/><path d="M12 16h10M12 20h10M12 24h6" stroke="#2B579A" stroke-width="2" stroke-linecap="round"/></svg><span>تقريري</span></div>
+            <div class="taskbar"></div>
+          </div>
+          <div class="boot" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="46" height="46" fill="none" stroke="#9FD8FF" stroke-width="2.4" stroke-linecap="round"><path d="M24 4v40M7 14l34 20M41 14 7 34"/><path d="m19 8 5 4 5-4M19 40l5-4 5 4M5 22l6-1-1-6M43 26l-6 1 1 6M10 33l1-6-6-1M38 15l-1 6 6 1"/></svg>
+            <div class="bar"><i></i></div>
+            <p>جارٍ استعادة الجهاز…</p>
+          </div>
+        </div>
+        <div class="lbase"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="addFile">أضف ملفاً إلى سطح المكتب</button>
+        <button type="button" class="btn solid" id="restart">أعد التشغيل</button>
+      </div>
+      <p class="msg" id="freezeMsg" aria-live="polite">جرّب بنفسك: أضف ملفاً ثم أعد التشغيل.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6) تنبيه الإطفاء ============ -->
+<section id="shutdown" class="sec alert" data-title="تنبيه">
+  <div class="hazard" aria-hidden="true"></div>
+  <div class="wrap split">
+    <div class="text">
+      <h2 class="wipe warn"><span class="badge" aria-hidden="true">!</span>تنبيه!</h2>
+      <p class="lead">عدّل الأستاذ عبد الله اللابتوبات في هذا المختبر لتنطفئ مباشرة في حالتين:</p>
+      <ul class="cases">
+        <li>
+          <svg viewBox="0 0 40 32" width="40" height="32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="26" height="17" rx="2"/><path d="M2 26h36"/></svg>
+          <span>عند إغلاق الشاشة.</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v11"/><path d="M9 8a10 10 0 1 0 14 0"/></svg>
+          <span>عند الضغط على زر الإطفاء مرة واحدة.</span>
+        </li>
+      </ul>
+      <p class="strong">الجهاز لا ينتظر ولا ينتقل إلى وضع السكون.</p>
+    </div>
+
+    <div class="demo" id="offDemo">
+      <div class="laptop">
+        <div class="lscreen" id="offScreen">
+          <div class="desktop">
+            <div class="dicon"><svg viewBox="0 0 32 32" width="30" height="30"><path d="M8 3h11l7 7v19H8z" fill="#fff"/><path d="M19 3v7h7" fill="#C9D6F0"/><path d="M12 16h10M12 20h10M12 24h6" stroke="#2B579A" stroke-width="2" stroke-linecap="round"/></svg><span>عملي الحالي</span></div>
+            <div class="taskbar"></div>
+          </div>
+          <div class="poweroff" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 4v11"/><path d="M9 8a10 10 0 1 0 14 0"/></svg>
+          </div>
+        </div>
+        <div class="lbase"><i class="pbtn" id="pwrLed"></i></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="closeLid">أغلق الشاشة</button>
+        <button type="button" class="btn" id="pressPower">اضغط زر الإطفاء مرة واحدة</button>
+        <button type="button" class="btn solid" id="powerOn" disabled>شغّل الجهاز</button>
+      </div>
+      <p class="msg" id="offMsg" aria-live="polite">جرّب: أغلق الشاشة أو اضغط زر الإطفاء.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7) البرامج ============ -->
+<section id="programs" class="sec dark programs" data-title="البرامج">
+  <div class="wrap">
+    <h2 class="wipe">البرامج على أجهزة المختبر</h2>
+    <p class="lead">أدواتك الهندسية جاهزة، من الدوائر الإلكترونية إلى الشبكات.</p>
+    <ul class="proglist" id="progList"></ul>
+  </div>
+</section>
+
+<!-- ============ 8) الختام ============ -->
+<section id="credits" class="sec credits" data-title="الختام">
+  <div class="wrap center">
+    <p class="small">تم تطوير هذا الموقع من قبل</p>
+    <div class="portrait">
+      <i class="orbit"></i>
+      <img src="assets/mine.jpg" alt="الأستاذ عبد الله علي الفتلاوي" width="640" height="640">
+    </div>
+    <h2>الأستاذ عبد الله علي الفتلاوي</h2>
+    <p class="role">مسؤول مختبر هندسة تقنيات الحاسوب</p>
+    <p class="thanks">نتمنى لك وقتاً مثمراً في المختبر.</p>
+    <button type="button" class="btn" id="toTop">العودة إلى الأعلى</button>
+  </div>
+</section>
+
+</main>
+
+<!-- حقوق ثابتة تظهر في كل انتقالة -->
+<footer class="bar">
+  <img src="assets/logo.png" alt="" width="30" height="30">
+  <div class="bar-text">
+    <strong>قسم هندسة تقنيات الحاسوب</strong>
+    <span>مسؤول المختبر: الأستاذ عبد الله علي الفتلاوي</span>
+  </div>
+  <small class="bar-year">© <span id="year">2026</span></small>
+</footer>
+
+<noscript><p style="position:fixed;inset:auto 0 60px;text-align:center;color:#fff">يحتاج هذا الدليل إلى تفعيل جافاسكربت.</p></noscript>
+<script src="js/main.js"></script>
+</body>
+</html>
