@@ -15,9 +15,9 @@
     // الخطوط الثلاثة وعدد الميز في كل خط
     // الخطوط بترتيب الأعمدة من اليسار (جهة النوافذ) إلى اليمين (جهة الباب)
     lines: [
-      { key: 'B', count: 8, name: 'جهة النوافذ' },
-      { key: 'C', count: 9, name: 'الوسط' },
-      { key: 'A', count: 8, name: 'جهة الباب' },
+      { key: 'B', count: 8, name: 'جهة النوافذ', shape: 'sq' },
+      { key: 'C', count: 9, name: 'الوسط', shape: 'circ' },
+      { key: 'A', count: 8, name: 'جهة الباب', shape: 'tri' },
     ],
     // البرامج: الاسم، الإصدار (اختياري)، النبذة (6 كلمات أو أقل)، اسم صورة الأيقونة في assets/programs
     programs: [
@@ -193,6 +193,13 @@
     </g>`;
   }
 
+  // رمز الخط: مثلث A، مربع B، دائرة C (بدل الألوان)
+  function shapeSVG(shape, cx, cy, r, cls) {
+    if (shape === 'tri') return `<polygon class="${cls}" points="${cx},${cy - r} ${(cx + r * 1.12).toFixed(1)},${(cy + r * .86).toFixed(1)} ${(cx - r * 1.12).toFixed(1)},${(cy + r * .86).toFixed(1)}"/>`;
+    if (shape === 'sq') return `<rect class="${cls}" x="${(cx - r * .88).toFixed(1)}" y="${(cy - r * .88).toFixed(1)}" width="${(r * 1.76).toFixed(1)}" height="${(r * 1.76).toFixed(1)}" rx="2"/>`;
+    return `<circle class="${cls}" cx="${cx}" cy="${cy}" r="${r}"/>`;
+  }
+
   function buildMap() {
     let out = `<svg viewBox="0 0 600 790" role="group" aria-label="مخطط المختبر: ${tot} ميزاً في ثلاثة خطوط">`;
     // الغرفة
@@ -214,13 +221,14 @@
       const cx = CX[c];
       // الوسط C يتقدّم نحو السبورة، والخطان الجانبيان يتراجعان قليلاً للخلف
       const off = ln.key === 'C' ? 0 : BACK;
-      out += `<g class="col-head ln-${ln.key}"><circle cx="${cx}" cy="${96 + off}" r="15" fill="var(--c)"/><text x="${cx}" y="${96 + off}">${ln.key}</text></g>`;
+      out += `<g class="col-head ln-${ln.key}">${shapeSVG(ln.shape, cx, 96 + off, 17, 'shp')}<text x="${cx}" y="${96 + off + (ln.shape === 'tri' ? 4 : 0)}">${ln.key}</text></g>`;
       for (let r = 0; r < ln.count; r++) {
         const n = r + 1, y = Y0 + off + r * PITCH, x = cx - DW / 2;
         const code = ln.key + n;
         out += `<g class="desk ln-${ln.key}" data-line="${ln.key}" data-n="${n}" tabindex="0" role="button" aria-label="الميز ${code}" style="--i:${order++}">
           <rect class="d" x="${x}" y="${y}" width="${DW}" height="${DH}" rx="7"/>
-          <text class="code" x="${cx}" y="${y + DH / 2}">${code}</text>
+          ${shapeSVG(ln.shape, cx, y + 12, 5, 'mk')}
+          <text class="code" x="${cx}" y="${y + 31}">${code}</text>
           ${laptop(x + 7, y + 3, 'L')}
           ${laptop(x + DW - 7 - 42, y + 3, 'R')}
         </g>`;
@@ -243,13 +251,13 @@
     const ln = CONFIG.lines.find(l => l.key === key);
     info.innerHTML = `
       <div class="sel-card ln-${key}">
-        <div class="sel-code">${code}</div>
+        <div class="sel-code"><i class="sh sh-${ln.shape}"></i>${code}</div>
         <div class="sel-meta">
           <b>الخط ${key}: ${ln.name}</b>
           <span>الميز ${ORD[n - 1] || n} من جهة السبورة</span>
           <div class="stickers">
-            <span class="sticker ln-${key}"><i></i>${code}-L</span>
-            <span class="sticker ln-${key}"><i></i>${code}-R</span>
+            <span class="sticker"><i class="sh sh-${ln.shape}"></i>${code}-L</span>
+            <span class="sticker"><i class="sh sh-${ln.shape}"></i>${code}-R</span>
           </div>
         </div>
       </div>`;
@@ -262,20 +270,70 @@
   $('.desk[data-line="A"][data-n="1"]').classList.add('nudge');
 
   /* ==========================================================
+     مؤشر «جرّب»: بقعة ضوء حول الزر + يد تضغط عليه
+     ========================================================== */
+  const guides = [];
+  function makeGuide(demo) {
+    const el = document.createElement('div');
+    el.className = 'spot';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = `<i class="halo"></i><span class="tip">جرّب!</span>
+      <svg class="finger" viewBox="0 0 40 52"><path d="M15 25V8.5a4.5 4.5 0 0 1 9 0V22l9.5 2.2a5 5 0 0 1 3.8 5v8.8c0 6.4-4.2 12-11.3 12h-6.2c-5 0-8.2-3-11.2-8.2L4 34.5a3.6 3.6 0 0 1 5.2-4.4L15 35.5z" fill="#fff" stroke="#0A1730" stroke-width="2" stroke-linejoin="round"/></svg>`;
+    demo.appendChild(el);
+    const tip = $('.tip', el);
+    let target = null, timer = 0;
+    function place() {
+      if (!target) return;
+      const d = demo.getBoundingClientRect(), b = target.getBoundingClientRect();
+      const x = b.left - d.left + b.width / 2, y = b.top - d.top + b.height / 2;
+      el.style.setProperty('--x', x.toFixed(1) + 'px');
+      el.style.setProperty('--y', y.toFixed(1) + 'px');
+      el.style.setProperty('--w', (b.width + 22).toFixed(1) + 'px');
+      el.style.setProperty('--h', (b.height + 14).toFixed(1) + 'px');
+      el.style.setProperty('--r', (Math.max(b.width, b.height) / 2 + 24).toFixed(1) + 'px');
+    }
+    const g = {
+      point(btn, label) {
+        clearTimeout(timer);
+        el.classList.remove('on');
+        timer = setTimeout(() => {
+          target = btn; tip.textContent = label || 'جرّب!';
+          place(); el.classList.add('on');
+        }, 300);
+      },
+      hide() { clearTimeout(timer); target = null; el.classList.remove('on'); },
+      place,
+    };
+    guides.push(g);
+    return g;
+  }
+  window.addEventListener('resize', () => guides.forEach(g => g.place()));
+  function whenVisible(el, fn) {
+    new IntersectionObserver((es, ob) => {
+      if (es.some(e => e.isIntersecting)) { ob.disconnect(); fn(); }
+    }, { threshold: 0.55 }).observe(el);
+  }
+
+  /* ==========================================================
      5) محاكاة التجميد
      ========================================================== */
   (() => {
     const demo = $('#freezeDemo'), screen = $('.lscreen', demo);
     const file = $('#userFile'), msg = $('#freezeMsg');
     const add = $('#addFile'), re = $('#restart');
+    const guide = makeGuide(demo);
     let has = false;
     const say = (t, ok) => { msg.textContent = t; msg.classList.toggle('ok', !!ok); };
 
+    whenVisible(demo, () => guide.point(add, 'جرّب: أضف ملفاً'));
+
     add.addEventListener('click', () => {
       has = true; file.hidden = false;
-      say('أضفت ملف «تقريري» إلى سطح المكتب. أعد التشغيل لترى ماذا يحدث.', true);
+      say('أضفت ملف «تقريري» إلى سطح المكتب. الآن أعد التشغيل لترى ماذا يحدث.', true);
+      guide.point(re, 'الآن أعد التشغيل');
     });
     re.addEventListener('click', () => {
+      guide.hide();
       add.disabled = re.disabled = true;
       screen.classList.add('is-booting');
       say('جارٍ إعادة التشغيل…');
@@ -290,27 +348,58 @@
   })();
 
   /* ==========================================================
-     6) محاكاة الإطفاء المباشر
+     6) محاكاة الإطفاء المباشر (لابتوب ثلاثي الأبعاد)
      ========================================================== */
   (() => {
-    const demo = $('#offDemo'), screen = $('#offScreen');
+    const demo = $('#offDemo'), l3d = $('#l3d'), key = $('#pwrKey');
     const msg = $('#offMsg');
     const lid = $('#closeLid'), pwr = $('#pressPower'), on = $('#powerOn');
+    const guide = makeGuide(demo);
     const say = (t, ok) => { msg.textContent = t; msg.classList.toggle('ok', !!ok); };
+    const tried = { lid: false, pwr: false };
+    let closed = false;
 
-    function off(reason) {
-      screen.classList.add('is-off');
-      demo.classList.add('is-off');
-      lid.disabled = pwr.disabled = true; on.disabled = false;
-      say(reason + ' انطفأ الجهاز فوراً: بلا سكون وبلا انتظار. وما لم تحفظه لن يعود.', true);
+    function fit() {
+      const k = Math.min(1, l3d.parentElement.clientWidth / 470);
+      l3d.style.setProperty('--k', k.toFixed(3));
+      l3d.style.height = Math.round((window.innerWidth <= 520 ? 340 : 400) * Math.max(k, .72)) + 'px';
     }
-    lid.addEventListener('click', () => off('أغلقت الشاشة.'));
-    pwr.addEventListener('click', () => off('ضغطت زر الإطفاء مرة واحدة.'));
-    on.addEventListener('click', () => {
-      screen.classList.remove('is-off');
+    fit();
+    window.addEventListener('resize', fit);
+
+    whenVisible(demo, () => guide.point(lid, 'جرّب: أغلق الشاشة'));
+
+    function off(how) {
+      demo.classList.remove('waking');
+      demo.classList.add('is-off');           // الشاشة تنطفئ فوراً
+      lid.disabled = pwr.disabled = true;
+      if (how === 'lid') {
+        tried.lid = true; closed = true;
+        l3d.classList.add('closed');          // والغطاء ينغلق فعلاً
+        say('أغلقت الشاشة، فانطفأ الجهاز فوراً: بلا سكون وبلا انتظار. وما لم تحفظه لن يعود.', true);
+      } else {
+        tried.pwr = true;
+        key.classList.remove('press'); void key.offsetWidth; key.classList.add('press');
+        say('ضغطت زر الإطفاء مرة واحدة، فانطفأ الجهاز فوراً. وما لم تحفظه لن يعود.', true);
+      }
+      setTimeout(() => { on.disabled = false; guide.point(on, 'شغّل الجهاز من جديد'); }, reduce ? 100 : 1400);
+    }
+    function wake() {
       demo.classList.remove('is-off');
+      demo.classList.add('waking');
       lid.disabled = pwr.disabled = false; on.disabled = true;
-      say('جرّب: أغلق الشاشة أو اضغط زر الإطفاء.');
+      say(closed ? 'فتحت الشاشة وشغّلت الجهاز من جديد.' : 'شغّلت الجهاز من جديد.', true);
+      closed = false;
+      if (!tried.lid) guide.point(lid, 'جرّب أيضاً: أغلق الشاشة');
+      else if (!tried.pwr) guide.point(pwr, 'جرّب أيضاً: زر الإطفاء');
+      else guide.hide();
+    }
+    lid.addEventListener('click', () => { guide.hide(); off('lid'); });
+    pwr.addEventListener('click', () => { guide.hide(); off('pwr'); });
+    on.addEventListener('click', () => {
+      guide.hide(); on.disabled = true;
+      if (closed) { l3d.classList.remove('closed'); setTimeout(wake, reduce ? 0 : 1000); }
+      else wake();
     });
   })();
 

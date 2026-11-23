@@ -155,8 +155,8 @@
         <h3>دلالات الرموز</h3>
         <dl class="legend">
           <div>
-            <dt><span class="chips"><i class="ch a">A</i><i class="ch b">B</i><i class="ch c">C</i></span></dt>
-            <dd><b>الحرف واللون: الخط.</b> A بجانب الباب (8 ميز)، B بجانب النوافذ (8 ميز)، C في الوسط (9 ميز).</dd>
+            <dt><span class="chips"><span class="ch"><i class="sh sh-tri"></i>A</span><span class="ch"><i class="sh sh-sq"></i>B</span><span class="ch"><i class="sh sh-circ"></i>C</span></span></dt>
+            <dd><b>الشكل والحرف: الخط.</b> المثلث A بجانب الباب (8 ميز)، المربع B بجانب النوافذ (8 ميز)، الدائرة C في الوسط (9 ميز).</dd>
           </div>
           <div>
             <dt><span class="sym"><b>3</b></span></dt>
@@ -167,8 +167,8 @@
             <dd><b>L و R: موضع اللابتوب.</b> L يسارك و R يمينك وأنت جالس أمام الميز، فرمز اللابتوب مثل <bdi>B4-L</bdi>.</dd>
           </div>
           <div>
-            <dt><span class="dots"><i class="g"></i><i class="o"></i><i class="r"></i></span></dt>
-            <dd><b>ملصق الحالة.</b> أخضر: جاهز. برتقالي: يحتاج صيانة. أحمر: لا تستخدمه وأبلغ المسؤول.</dd>
+            <dt><span class="marks"><i>✓</i><i>!</i><i class="x">✕</i></span></dt>
+            <dd><b>ملصق الحالة.</b> ✓ جاهز. ! يحتاج صيانة. ✕ لا تستخدمه وأبلغ المسؤول.</dd>
           </div>
         </dl>
     </div>
@@ -235,24 +235,42 @@
     </div>
 
     <div class="demo" id="offDemo">
-      <div class="laptop">
-        <div class="lscreen" id="offScreen">
-          <div class="desktop">
-            <div class="dicon"><svg viewBox="0 0 32 32" width="30" height="30"><path d="M8 3h11l7 7v19H8z" fill="#fff"/><path d="M19 3v7h7" fill="#C9D6F0"/><path d="M12 16h10M12 20h10M12 24h6" stroke="#2B579A" stroke-width="2" stroke-linecap="round"/></svg><span>عملي الحالي</span></div>
-            <div class="taskbar"></div>
-          </div>
-          <div class="poweroff" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 4v11"/><path d="M9 8a10 10 0 1 0 14 0"/></svg>
+      <div class="l3d" id="l3d" aria-hidden="true">
+        <div class="stage">
+          <i class="gshadow"></i>
+          <div class="rig">
+            <div class="f dk-top">
+              <div class="keys"></div>
+              <div class="pad"></div>
+              <i class="pk" id="pwrKey"><svg viewBox="0 0 32 32" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M16 4v11"/><path d="M9 8a10 10 0 1 0 14 0"/></svg></i>
+            </div>
+            <div class="f dk-front"></div>
+            <div class="f dk-left"></div>
+            <div class="f dk-right"></div>
+            <div class="hinge">
+              <div class="lid">
+                <div class="f lid-in">
+                  <div class="scr3">
+                    <div class="desktop">
+                      <div class="dicon"><svg viewBox="0 0 32 32" width="30" height="30"><path d="M8 3h11l7 7v19H8z" fill="#fff"/><path d="M19 3v7h7" fill="#C9D6F0"/><path d="M12 16h10M12 20h10M12 24h6" stroke="#2B579A" stroke-width="2" stroke-linecap="round"/></svg><span>عملي الحالي</span></div>
+                      <div class="taskbar"></div>
+                    </div>
+                    <div class="poweroff"><svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 4v11"/><path d="M9 8a10 10 0 1 0 14 0"/></svg></div>
+                  </div>
+                </div>
+                <div class="f lid-out"><img src="assets/logo.png" alt="" width="50" height="50"></div>
+                <div class="f lid-l"></div><div class="f lid-r"></div><div class="f lid-t"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="lbase"><i class="pbtn" id="pwrLed"></i></div>
       </div>
       <div class="actions">
         <button type="button" class="btn" id="closeLid">أغلق الشاشة</button>
         <button type="button" class="btn" id="pressPower">اضغط زر الإطفاء مرة واحدة</button>
         <button type="button" class="btn solid" id="powerOn" disabled>شغّل الجهاز</button>
       </div>
-      <p class="msg" id="offMsg" aria-live="polite">جرّب: أغلق الشاشة أو اضغط زر الإطفاء.</p>
+      <p class="msg" id="offMsg" aria-live="polite">جرّب بنفسك: أغلق الشاشة وشاهد ماذا يحدث.</p>
     </div>
   </div>
 </section>
