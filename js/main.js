@@ -182,7 +182,7 @@
      4) خريطة المختبر
      ========================================================== */
   const ORD = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع'];
-  const CX = [120, 300, 480], Y0 = 122, PITCH = 66, DW = 130, DH = 46;
+  const CX = [120, 300, 480], Y0 = 122, BACK = 46, PITCH = 66, DW = 130, DH = 46;
   const tot = CONFIG.lines.reduce((a, l) => a + l.count, 0);
 
   function laptop(x, y, letter) {
@@ -202,19 +202,21 @@
     // النوافذ: ثلاث نوافذ في جهة B (اليسار) حصراً
     for (let i = 0; i < 3; i++) out += `<rect class="win" x="13" y="${210 + i * 150}" width="10" height="100"/>`;
     out += `<text class="wall-lbl" transform="translate(38 360) rotate(-90)" text-anchor="middle">النوافذ</text>`;
-    // الحاجز الزجاجي (اليمين، في الجزء الأمامي)
-    for (let i = 0; i < 3; i++) out += `<rect class="glass" x="577" y="${130 + i * 105}" width="10" height="90"/>`;
-    // باب الدخول من جهة A (اليمين، قرب مؤخرة المختبر) مع قوس الفتح
-    out += `<rect class="doorgap" x="576" y="636" width="12" height="70"/><path class="doorarc" d="M582 636 A70 70 0 0 0 512 706"/><line class="doorleaf" x1="582" y1="636" x2="512" y2="636"/><text class="wall-lbl door-lbl" x="545" y="672" text-anchor="middle">الباب</text>`;
+    // الحاجز الزجاجي (الجدار الأيمن، تحت الباب)
+    for (let i = 0; i < 3; i++) out += `<rect class="glass" x="577" y="${215 + i * 105}" width="10" height="90"/>`;
+    // باب الدخول: في الجدار الأيمن (جهة A) من الزاوية فوق الميز A1، يفتح للداخل من الزاوية
+    out += `<rect class="doorgap" x="575" y="22" width="14" height="56"/><path class="doorarc" d="M526 22 A56 56 0 0 0 582 78"/><line class="doorleaf" x1="582" y1="22" x2="526" y2="22"/><text class="wall-lbl door-lbl" x="556" y="66" text-anchor="middle">الباب</text>`;
     // السبلت: خلف آخر ميز في زاوية خط B
     out += `<rect class="ac" x="26" y="684" width="64" height="30" rx="3"/><text class="wall-lbl" x="58" y="703" text-anchor="middle">سبلت</text>`;
 
     let order = 0;
     CONFIG.lines.forEach((ln, c) => {
       const cx = CX[c];
-      out += `<g class="col-head ln-${ln.key}"><circle cx="${cx}" cy="96" r="15" fill="var(--c)"/><text x="${cx}" y="96">${ln.key}</text></g>`;
+      // الوسط C يتقدّم نحو السبورة، والخطان الجانبيان يتراجعان قليلاً للخلف
+      const off = ln.key === 'C' ? 0 : BACK;
+      out += `<g class="col-head ln-${ln.key}"><circle cx="${cx}" cy="${96 + off}" r="15" fill="var(--c)"/><text x="${cx}" y="${96 + off}">${ln.key}</text></g>`;
       for (let r = 0; r < ln.count; r++) {
-        const n = r + 1, y = Y0 + r * PITCH, x = cx - DW / 2;
+        const n = r + 1, y = Y0 + off + r * PITCH, x = cx - DW / 2;
         const code = ln.key + n;
         out += `<g class="desk ln-${ln.key}" data-line="${ln.key}" data-n="${n}" tabindex="0" role="button" aria-label="الميز ${code}" style="--i:${order++}">
           <rect class="d" x="${x}" y="${y}" width="${DW}" height="${DH}" rx="7"/>
